@@ -1,4 +1,4 @@
-import { DefaultData } from "@/stores/index";
+import { DefaultData } from "@/store/index";
 import { FetchNUI } from "@/utils";
 import { storeToRefs } from "pinia";
 
