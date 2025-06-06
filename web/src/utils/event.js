@@ -8,8 +8,11 @@ export default function () {
 
   window.addEventListener("message", async ({ data }) => {
     switch (data.action) {
-      case 'checkNui':
-        FetchNUI('nuiReady', {})
+      case 'OPEN_NUI':
+        document.getElementById('#main').style.display = 'flex';
+        break;
+      case 'CHECK_NUI':
+        FetchNUI('NUI_READY', {})
         break;
       default:
         break;

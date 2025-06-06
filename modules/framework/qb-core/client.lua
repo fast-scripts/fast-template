@@ -148,15 +148,15 @@ Framework.Shared = QBCore.Shared
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     Wait(1500)
-    TriggerEvent('community_bridge:Client:OnPlayerLoaded')
+    TriggerEvent('fast-template:client:onPlayerLoaded')
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
-    TriggerEvent('community_bridge:Client:OnPlayerUnload')
+    TriggerEvent('fast-template:client:onPlayerUnload')
 end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate', function(data)
-    TriggerEvent('community_bridge:Client:OnPlayerJobUpdate', data.name, data.label, data.grade_label, data.grade)
+    TriggerEvent('fast-template:client:onPlayerJobUpdate', data.name, data.label, data.grade_label, data.grade)
 end)
 
 RegisterNetEvent('QBCore:Client:OnGangUpdate', function(data)
@@ -166,7 +166,7 @@ RegisterNetEvent('QBCore:Client:OnGangUpdate', function(data)
     PlayerJobLabel = data.label
     PlayerJobGradeName = data.grade.name
     PlayerJobGradeLevel = data.grade.level
-    TriggerEvent('community_bridge:Client:OnPlayerGangUpdate', PlayerGangName, PlayerGangLabel, PlayerGangGradeName, PlayerGangGradeLevel)
+    TriggerEvent('fast-template:client:onPlayerGangUpdate', PlayerGangName, PlayerGangLabel, PlayerGangGradeName, PlayerGangGradeLevel)
     --]]
 end)
 

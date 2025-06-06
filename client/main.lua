@@ -29,14 +29,14 @@ local function FetchNui()
     while not NuiLoaded do
         if NetworkIsSessionStarted() then
             SendNUIMessage({
-                action = "checkNui",
+                action = "CHECK_NUI",
             })
         end
         Wait(2000)
     end
 end
 
-RegisterNetEvent('fast-template:client:OnPlayerLoaded', function ()
+RegisterNetEvent('fast-template:client:onPlayerLoaded', function ()
     Wait(1500)
     FetchNui()
 end)

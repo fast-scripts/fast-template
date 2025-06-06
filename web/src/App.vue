@@ -1,5 +1,6 @@
 <script setup>
 import nuiEvents from './utils/event'
+import { FetchNUI } from "@/utils";
 import { onMounted } from 'vue';
 import { DefaultData } from '@/store/index'
 import { storeToRefs } from 'pinia'
@@ -11,6 +12,8 @@ const { } = storeToRefs(StoreData);
 onMounted(() => {
     window.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
+            document.getElementById('main').style.display = 'none';
+            FetchNUI('CLOSE_UI', {});
         };
     });
 

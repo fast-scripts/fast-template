@@ -1,31 +1,39 @@
 local resource = GetInvokingResource() or GetCurrentResourceName()
 local script = GetResourceMetadata(resource, 'scriptname', 0)
 local version = GetResourceMetadata(resource, 'version', 0)
-local newversion
 
 Citizen.CreateThread(function()
-    local function ToNumber(str)
-        return tonumber(str)
-    end
+    PerformHttpRequest('https://api.vezironi.com/v1/fivem/version-check', function(error_code, result_data, result_headers, error_data)
+        local errdata = error_data and json.decode(error_data) or nil
 
-    PerformHttpRequest('https://raw.githubusercontent.com/fast-scripts/fast-versionchecker/refs/heads/main/'.. script .. '.txt', function(error, result, headers)
-        if error ~= 200 then
-            return print('^1The version check failed, HTTP error: '..tostring(error)..'^0')
+        if error_code ~= 200 then
+            print(errdata and errdata.message or 'Error fetching version data')
+            return
         end
 
-        if not result then
-            return print('^1The version check failed, no data received.^0')
+        if not result_data or result_data == '' then
+            print(errdata and errdata.message or 'Error fetching version data')
+            return
         end
 
-        local success, decodedResult = pcall(function() return json.decode(result) end)
-        if not success or not decodedResult then
-            return print('^1The version check failed, unable to parse JSON.^0')
-        end
+        local data = json.decode(result_data)
 
-        if ToNumber(decodedResult.version:gsub('%.', '')) > ToNumber(version:gsub('%.', '')) then
-            print('^3['..script..'] - New update available now!^0\nCurrent Version: ^1'..version..'^0.\nNew Version: ^2'..decodedResult.version..'^0.\nNews: ^2'..decodedResult.news..'^0.\n^5Download it now on your https://keymaster.fivem.net/^0.')
+        if data.old_version then
+            print('[^1WARNING^0] You are not running the latest version, please update! (latest version: ^4'..data.version..'^0, your version: ^3'..version..'^0)')
+            for category, messages in pairs(data.changelog) do
+                print('^2'..category..':^0')
+                for _, msg in ipairs(messages) do
+                    print('  • ' .. msg)
+                end
+            end
+            print('^2Discord:^0')
+            print('  • Check the discord for more information on the new features and changes: https://discord.gg/0resmon')
         else
             print('^3['..script..'] ^2- You are using the latest version of the script. ^0\nCurrent Version: ^1'..version..'^0.')
         end
-    end, 'GET')
+    end, 'GET', nil, {
+        ['Content-Type'] = 'application/json',
+        ["x-script-name"] = script,
+        ["x-version"] = version,
+    })
 end)
